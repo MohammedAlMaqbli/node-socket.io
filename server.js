@@ -50,7 +50,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send_message-member", function (message) {
-    console.log("Send message to member: " + message);
+    console.log("Send message to member: ", message);
 
     io.to(`${members[message.receiver_id]}`).emit(
       "receive_message-member",
