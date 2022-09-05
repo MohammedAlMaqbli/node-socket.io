@@ -50,6 +50,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send_message-member", function (message) {
+    console.log("Send message to member: " + message);
+
     io.to(`${members[message.receiver_id]}`).emit(
       "receive_message-member",
       message
@@ -58,6 +60,6 @@ io.on("connection", (socket) => {
 });
 
 setInterval(
-  () => io.emit("time", new Date().toTimeString() + " Moe All " + PORT),
+  () => io.emit("time", new Date().toTimeString() + " Moe All2 " + PORT),
   1000
 );
