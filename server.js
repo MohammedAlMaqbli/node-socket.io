@@ -15,7 +15,11 @@ const server = express()
   )
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
-const io = socketIO(server);
+const io = socketIO(server, {
+  cors: {
+    origin: "*",
+  },
+});
 
 const users = [];
 const members = [];
@@ -54,6 +58,6 @@ io.on("connection", (socket) => {
 });
 
 setInterval(
-  () => io.emit("time", new Date().toTimeString() + " Moe origin " + PORT),
+  () => io.emit("time", new Date().toTimeString() + " Moe All " + PORT),
   1000
 );
