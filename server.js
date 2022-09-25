@@ -29,7 +29,7 @@ io.on("connection", (socket) => {
 
   socket.on("user_connected", function (user_id) {
     users[user_id] = socket.id;
-    io.emit("updateUserStatus", users);
+    io.emit("updateUserStatus", { users, members });
     console.log("user connected " + user_id);
   });
 
@@ -46,6 +46,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send_message", function (message) {
+    console.log("Send message: ", message);
     io.to(`${users[message.receiver_id]}`).emit("receive_message", message);
   });
 
