@@ -58,6 +58,12 @@ io.on("connection", (socket) => {
       message
     );
   });
+
+  //on change seen status
+  socket.on("change_seen_status", function (message) {
+    console.log("Change seen status: " + users[message.receiver_id], message);
+    io.to(`${users[message.receiver_id]}`).emit("seen_status", message);
+  });
 });
 
 setInterval(
