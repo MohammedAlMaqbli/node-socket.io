@@ -63,6 +63,10 @@ io.on("connection", (socket) => {
   socket.on("change_seen_status", function (message) {
     console.log("Change seen status: " + users[message.receiver_id], message);
     //if sender is online
+    console.log(
+      "users[message.sender_id]: " + users[message.sender_id],
+      message
+    );
     if (users[message.sender_id])
       io.to(`${users[message.receiver_id]}`).emit("seen_status", message);
   });
