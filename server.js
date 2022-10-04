@@ -41,9 +41,19 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", function () {
     var i = users.indexOf(socket.id);
-    users.splice(i, 1, 0);
-    io.emit("updateUserStatus", users);
+    if (i != -1) {
+      users.splice(i, 1);
+      io.emit("updateUserStatus", { users, members });
+      console.log("user disconnected");
+    }
+    var j = members.indexOf(socket.id);
+    if (j != -1) {
+      members.splice(j, 1);
+      io.emit("updateMemberStatus", members);
+      console.log("member disconnected");
+    }
   });
+  //on disconnect member from socket
 
   socket.on("send_message", function (message) {
     console.log("Send message: ", message);
@@ -66,10 +76,12 @@ io.on("connection", (socket) => {
   });
 
   socket.on("change_seen_status_member", function (message) {
+    console.log("change_seen_status_member", message);
     io.to(`${members[message.receiver_id]}`).emit("seen_status", message);
   });
 
   socket.on("change_seen_status_member_to_user", function (message) {
+    console.log("change_seen_status_member_to_user", message);
     io.to(`${users[message.receiver_id]}`).emit("seen_status", message);
   });
 });
