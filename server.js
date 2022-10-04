@@ -66,7 +66,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("change_seen_status_member", function (message) {
-    io.to(`${users[message.receiver_id]}`).emit("seen_status", message);
+    io.to(`${members[message.receiver_id]}`).emit("seen_status", message);
   });
 
   socket.on("change_seen_status_member_to_user", function (message) {
