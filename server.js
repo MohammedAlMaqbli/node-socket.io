@@ -42,13 +42,13 @@ io.on("connection", (socket) => {
   socket.on("disconnect", function () {
     var i = users.indexOf(socket.id);
     if (i != -1) {
-      users.splice(i, 1);
+      users.splice(i, 1, 0);
       io.emit("updateUserStatus", { users, members });
       console.log("user disconnected");
     }
     var j = members.indexOf(socket.id);
     if (j != -1) {
-      members.splice(j, 1);
+      members.splice(j, 1, 0);
       io.emit("updateMemberStatus", members);
       console.log("member disconnected");
     }
