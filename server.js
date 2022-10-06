@@ -25,8 +25,6 @@ const users = [];
 const members = [];
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
-
   socket.on("user_connected", function (user_id) {
     users[user_id] = socket.id;
     io.emit("updateUserStatus", { users, members });
@@ -58,7 +56,7 @@ io.on("connection", (socket) => {
   socket.on("send_message", function (message) {
     // console.log("Send message: ", message);
     if (users[message.receiver_id]) {
-      console.log("save_message_send to user");
+      console.log("send_message to user");
       io.to(`${users[message.receiver_id]}`).emit("receive_message", message);
     } else {
       if (message && message.is_sender_member == 1) {
