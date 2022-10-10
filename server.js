@@ -56,7 +56,7 @@ io.on("connection", (socket) => {
   socket.on("send_message", function (message) {
     // console.log("Send message: ", message);
     if (users[message.receiver_id]) {
-      console.log("send_message to user");
+      console.log("send_message to user", message);
       io.to(`${users[message.receiver_id]}`).emit("receive_message", message);
     } else {
       if (message && message.is_sender_member == 1) {
@@ -70,12 +70,10 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send_message-member", function (message) {
-    console.log("Send message to member: ");
-
-    io.to(`${members[message.sender_id]}`).emit(
-      "receive_message-member",
-      message
-    );
+    console.log("Send message to member: " + message);
+    let id =
+      message.is_sender_member == 0 ? message.receiver_id : message.sender_id;
+    io.to(`${members[id]}`).emit("receive_message-member", message);
   });
 
   //on change seen status
