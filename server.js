@@ -54,25 +54,31 @@ io.on("connection", (socket) => {
   //on disconnect member from socket
 
   socket.on("send_message", function (message) {
-    // console.log("Send message: ", message);
+    console.log("Send message: ", message);
+
     if (users[message.receiver_id]) {
       console.log("send_message to user", message);
       io.to(`${users[message.receiver_id]}`).emit("receive_message", message);
     } else {
       if (message && message.is_sender_member == 1) {
-        console.log("save_message_offline");
-        io.to(`${members[message.sender_id]}`).emit(
-          "save_message_offline",
-          message
-        );
+        if (users.length > 0) {
+          io.to(`${users[0]}`).emit("receive_message", message);
+        } else {
+          io.to(`${members[message.sender_id]}`).emit(
+            "save_message_offline",
+            message
+          );
+        }
       }
     }
   });
 
   socket.on("send_message-member", function (message) {
-    console.log("Send message to member: " + message);
+    console.log("Send message to member: ", message);
     let id =
       message.is_sender_member == 0 ? message.receiver_id : message.sender_id;
+
+    console.log("ID ", id, members[id]);
     io.to(`${members[id]}`).emit("receive_message-member", message);
   });
 
