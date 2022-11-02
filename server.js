@@ -60,10 +60,31 @@ io.on("connection", (socket) => {
       console.log("send_message to user", message);
       io.to(`${users[message.receiver_id]}`).emit("receive_message", message);
     } else {
+      console.log(
+        "Send message: ",
+        message,
+        users[message.receiver_id],
+        "ELSE"
+      );
+
       if (message && message.is_sender_member == 1) {
-        if (users.length > 0) {
+        const userToSendTo = users.find((user) => user != 0);
+        console.log(
+          "message && message.is_sender_member == 1",
+          message && message.is_sender_member == 1
+        );
+        if (users.length > 0 && userToSendTo) {
+          console.log(
+            "UsertoSendTo",
+            userToSendTo,
+            "send_message to user users.length",
+            message,
+            users.length,
+            users
+          );
           io.to(`${users[0]}`).emit("receive_message", message);
         } else {
+          console.log("save_message_offline", message);
           io.to(`${members[message.sender_id]}`).emit(
             "save_message_offline",
             message
